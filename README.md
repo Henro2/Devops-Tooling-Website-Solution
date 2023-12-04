@@ -29,7 +29,7 @@ Using Lsblk to varify the newly created partitions
 
   - I installed LVM2 
 
-  I used Pvcreate to mark each of the 3 disk as physical volume to use used by the LVM
+  I used Pvcreate to mark each of the 3 disk as physical volume to be used by the LVM
 
  ![Alt text](images/image-1.png)
 
@@ -59,3 +59,138 @@ Using Lsblk to varify the newly created partitions
 mnt/apps to be used by webserver, mnt/logs to be used by webserver logs and mnt/opt to be used by jenkins server in next project
 
 ![Alt text](images/image-7.png)
+
+
+Install NFS server and configure it to start on reboot.
+
+ -  I updated my server 
+
+ ![Alt text](<images/Unsaved Image 2.jpg>)
+
+
+ -  I installed NFS server using sudo yum install nfs-utils -y
+
+ -  using sudo systemctl start nfs-server.service, i started it
+
+ - I enebled it with systemctl enable nfs-server.service
+
+
+![Alt text](<images/Unsaved Image 3.jpg>)
+
+
+I granted permisions that will enable my webservers to read, write and execute files in NFS server
+sudo chown -R nobody: /mnt/apps
+
+
+sudo chown -R nobody: /mnt/logs
+
+
+
+sudo chown -R nobody: /mnt/opt
+
+
+
+
+
+
+sudo chmod -R 777 /mnt/apps
+
+
+
+
+sudo chmod -R 777 /mnt/logs
+
+
+
+sudo chmod -R 777 /mnt/opt
+
+![Alt text](<images/Unsaved Image 6.jpg>)
+
+
+
+sudo systemctl restart nfs-server.service
+
+
+I configured access to NFS for clients within the same subnet 
+
+
+![Alt text](<images/Unsaved Image 7.jpg>)
+
+-  sudo exportfs -arv
+
+![Alt text](<images/Unsaved Image 8.jpg>)
+
+-  to check which port is used by the NFS and open it using security group 
+
+![Alt text](<images/Unsaved Image 9.jpg>)
+
+
+![Alt text](<images/Unsaved Image 10.jpg>)
+
+
+  
+
+
+
+
+
+## Configuring backend database as part of 3 tier Architecture  
+
+  step2 
+
+   **To configure database server**
+
+I apined up Ubuntu instance in AWS and called it DB for my database,
+
+- With sudo apt install mysq-server, i installed mysql server and logged in using sudo mysql and created a databse called **tooling**
+
+![Alt text](<images/Unsaved Image 4.jpg>)
+
+
+I created a database user called webaccess and grant it access to do anything on the tooling database only from the webserver subnet cidr
+
+I granted all privileges to the user 
+![Alt text](<images/Unsaved Image 5.jpg>)
+
+
+Step 3
+
+ ## Prepering webservers 
+
+ -  I installed NFS client using the command **sudo yum install nfs-utils nfs4-acl-tools -y**
+
+![
+](<images/Unsaved Image 11.jpg>)
+
+-  I created a directory sudo mkdir /var/www and mounted sudo mount -t nfs -o rw,nosuid 172.31.44.71:/mnt/apps /var/www
+
+![Alt text](<images/Unsaved Image 12.jpg>)
+
+- With df -h, i varified that NFS is mounted correctely 
+
+![Alt text](<images/Unsaved Image 13.jpg>)
+
+- I edited fstab file with my NFS private ip for consistency after reboot 
+
+![Alt text](<images/Unsaved Image 14.jpg>)
+
+
+-  I installed remi`s repository, Aapache and PHP
+
+`sudo yum install httpd -y
+
+sudo dnf install https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
+
+sudo dnf install dnf-utils http://rpms.remirepo.net/enterprise/remi-release-8.rpm
+
+sudo dnf module reset php
+
+sudo dnf module enable php:remi-7.4 -y
+
+sudo dnf install php php-opcache php-gd php-curl php-mysqlnd -y
+
+sudo systemctl start php-fpm
+
+sudo systemctl enable php-fpm
+
+setsebool -P httpd_execmem 1
