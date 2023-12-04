@@ -8,10 +8,10 @@
 
 
 
-  ![Alt text](images/spined.jpg)
+![Alt text](images/spined.jpg)
 
 
-   -  Configuring LVM on the NFS server
+   Configuring LVM on the NFS server
 
       I created 3 volumes of 10gb each on the same availability zone with my NFS server and attached them to my NFS server 
  
@@ -23,35 +23,34 @@
 
  ![Alt text](images/Gdisk.jpg)
 
-
- Using Lsblk to varify the newly created partitions 
-  ![Alt text](image.png)
+Using Lsblk to varify the newly created partitions
+  ![Alt text](images/image-1.png)
 
 
   - I installed LVM2 
 
   I used Pvcreate to mark each of the 3 disk as physical volume to use used by the LVM
 
-![Alt text](image-1.png)
+ ![Alt text](images/image-1.png)
 
   - I used sudo pvs to varify 
 
-    ![Alt text](image-2.png)
+    ![Alt text](images/image-2.png)
 
 
     - I used vgcreate the create volume group called webdata.vg and varified with **sudo vgs**
 
-    ![Alt text](image-3.png)
+    ![Alt text](images/image-3.png)
 
     - I used lvcreate to create 3 logical volumes from the VG group. lv-opt,lv-apps and lv-logs.
 
-    ![Alt text](image-4.png)
+    ![Alt text](images/image-4.png)
 
-    ![Alt text](image-5.png)
+    ![Alt text](images/image-5.png)
 
     - I formated the volumes with xfs extension 
 
-    ![Alt text](image-6.png)
+    ![Alt text](images/image-6.png)
 
 
 
@@ -59,5 +58,4 @@
 -  I created 3 mount points called mnt/opt to mount lv-opt, mnt/logs to mount lv-logs and mnt/apps to mount lv-apps
 mnt/apps to be used by webserver, mnt/logs to be used by webserver logs and mnt/opt to be used by jenkins server in next project
 
-![Alt text](image-7.png)
-
+![Alt text](images/image-7.png)
