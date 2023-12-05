@@ -276,4 +276,4 @@ I repeated this same process in my webserver 2 and got the same result.
 
 
 
-## PROJECTED COMPLETED
+## PROJECT COMPLETED
