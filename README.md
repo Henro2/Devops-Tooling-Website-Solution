@@ -194,3 +194,86 @@ sudo systemctl start php-fpm
 sudo systemctl enable php-fpm
 
 setsebool -P httpd_execmem 1
+
+-  I varified that apache files are available in my NFS server and also in my webserver. They are shown bellow. 
+
+
+![Alt text](<images/Unsaved Image 15.jpg>)
+
+![Alt text](<images/Unsaved Image 16 .jpg>)
+
+
+- I also created a file called test.txt to test that anything i created in /var/www/ will also apear in my NFS server at mnt/apps folder
+
+![Alt text](<images/Unsaved Image 17.jpg>)
+
+![Alt text](<images/Unsaved Image 18.jpg>)
+
+- I repeated step 4  /var/log/httpd and mounted it on mnt/logs
+
+![Alt text](<images/Unsaved Image 19.jpg>)
+
+
+-  To fork the tooling souce code, I install git in my webserver 
+
+![Alt text](images/git.jpg)
+
+- Clone the repository 
+
+![Alt text](images/clone.jpg)
+
+-  I copied the tolling folder content to var/www/html
+
+![Alt text](images/1.jpg)
+
+
+- I opened port 80 on my webserver and dissable selinux setenforce 0.
+
+![Alt text](images/selinux.jpg)
+
+
+-  I restarted httpd.
+
+- I edited vi /etc/mysql/mysql.conf.d/mysqld.cnf and change the localhost ip address to 0.0.0.0
+and restarted mysql service
+
+![Alt text](images/edited.jpg)
+
+- I updated the website configuration to be able to connect to my database. SO, i edited the file /var/www/html/functions.php inserting the private ip of my database, user and password
+
+ ![Alt text](images/e.jpg)
+
+
+ ![Alt text](images/ne.jpg)
+
+
+
+
+
+![Alt text](images/db.jpg)
+
+
+- With my webserver public ip address/index.php
+
+
+  ![Alt text](images/20.jpg)
+
+  I loged in using admin admin
+
+   
+
+
+![Alt text](images/21.jpg)
+
+
+
+I repeated this same process in my webserver 2 and got the same result. 
+
+
+![Alt text](images/22.jpg)
+
+
+
+
+
+## PROJECTED COMPLETED
